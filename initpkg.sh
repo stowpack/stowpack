@@ -30,3 +30,12 @@ function yumyum-force-install {
     fi
   done
 }
+
+function yumyum-home {
+  cd $YUMYUM_HOME
+}
+
+function yumyum-log {
+  echo "[$(date +'%H:%M %d/%m/%g')] $@" >> $YUMYUM_HOME/log/recipe.log
+  echo "$@"
+}
