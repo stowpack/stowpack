@@ -1,41 +1,41 @@
 #!/bin/bash
-# This script provides APIs to manipulate the yumyum package manager.
+# This script provides APIs to manipulate the stowpack package manager.
 # See the online documentation for details.
 
-function yumyum-install {
+function stowpack-install {
   for i in $@; do
     basename="$(basename $i)"
-    install -C $i $YUMYUM_HOME/$basename
+    install -C $i $STOWPACK_HOME/$basename
     if $VERBOSE; then
-      echo "Installed: $i\t>\t$YUMYUM_HOME/$basename"
+      echo "Installed: $i\t>\t$STOWPACK_HOME/$basename"
     fi
   done
 }
 
-function yumyum-delete {
+function stowpack-delete {
   for i in $@; do
-    rm $YUMYUM_HOME/$i
+    rm $STOWPACK_HOME/$i
    if $VERBOSE; then
-        echo "Deleted: \t\t$YUMYUM_HOME/$i"
+        echo "Deleted: \t\t$STOWPACK_HOME/$i"
    fi
   done
 }
 
-function yumyum-force-install {
+function stowpack-force-install {
   for i in $@; do
     basename="$(basename $i)"
-    install $i $YUMYUM_HOME/$basename
+    install $i $STOWPACK_HOME/$basename
     if $VERBOSE; then
-      echo "Force-installed: $i\t>\t$YUMYUM_HOME/$basename"
+      echo "Force-installed: $i\t>\t$STOWPACK_HOME/$basename"
     fi
   done
 }
 
-function yumyum-home {
-  cd $YUMYUM_HOME
+function stowpack-home {
+  cd $STOWPACK_HOME
 }
 
-function yumyum-log {
-  echo "[$(date +'%H:%M %d/%m/%g')] $@" >> $YUMYUM_HOME/log/recipe.log
+function stowpack-log {
+  echo "[$(date +'%H:%M %d/%m/%g')] $@" >> $STOWPACK_HOME/log/recipe.log
   echo "$@"
 }
