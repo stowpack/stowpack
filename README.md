@@ -1,2 +1,2 @@
-# yumyum
-Tasty package manager 📦😋
+# stowpack
+A package manager for Linux.
