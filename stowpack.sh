@@ -28,6 +28,31 @@ function parse_yaml {
 # Get the variables
 eval $(parse_yaml ~/.stowpack/config)
 
+# Functions
+function stcli_install {
+  # Loop through every folder in $stowpack_home/bowls
+  for folder in "$stowpack_home"/bowls/*; do
+    # Check if the folder is actually a folder
+    if [[ -d "$folder" ]]; then
+      # Check if the folder name matches the argument
+      if [[ $(basename "$folder") == "$1" ]]; then
+        # Check if the folder contains a file called stowpack.yaml
+        if [[ -f "$folder"/stowpack.yaml ]]; then
+          # Evaluate the output of parse_yaml as a bash script
+          eval "$(parse_yaml "$folder"/stowpack.yaml)"
+          echo "$BOLD${1}:$RESET $stowpack_pkg_description"
+          # Return the exit code of the last command
+          return $?
+        fi
+      fi
+    fi
+  done
+  # If no results are found, echo a message and run stcli_search
+  echo "Could not find $1. Similar matches:"
+  stcli_search "$1"
+  return 1
+}
+
 function stcli_help {
     echo "                                                
   -_-/    ,                                ,,   
@@ -72,13 +97,21 @@ command=$1
 # Execute the command
 case $command in
     install)
-        stcli_install $2
+        shift
+        for pkg in $@; do
+           stcli_install $pkg
+        done
+        exit $?
         ;;
     uninstall)
         stcli_uninstall $2
         ;;
     help)
         stcli_help
+        ;;
+    path)
+        echo "export PATH=\"\$PATH:$stowpack_home/bin:$stowpack_home/sbin\""
+        echo "export MANPATH=\"\$MANPATH/$stowpack_home/man\""
         ;;
     woofwoof)
         echo "     |\\_/|                  
