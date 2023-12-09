@@ -5,18 +5,18 @@
 function stowpack-install {
   for i in $@; do
     basename="$(basename $i)"
-    install -C $i $STOWPACK_HOME/$basename
+    install -C $i $stowpack_home/$basename
     if $VERBOSE; then
-      echo "Installed: $i\t>\t$STOWPACK_HOME/$basename"
+      echo "Installed: $i\t>\t$stowpack_home/$basename"
     fi
   done
 }
 
 function stowpack-delete {
   for i in $@; do
-    rm $STOWPACK_HOME/$i
+    rm $stowpack_home/$i
    if $VERBOSE; then
-        echo "Deleted: \t\t$STOWPACK_HOME/$i"
+        echo "Deleted: \t\t$stowpack_home/$i"
    fi
   done
 }
@@ -24,18 +24,18 @@ function stowpack-delete {
 function stowpack-force-install {
   for i in $@; do
     basename="$(basename $i)"
-    install $i $STOWPACK_HOME/$basename
+    install $i $stowpack_home/$basename
     if $VERBOSE; then
-      echo "Force-installed: $i\t>\t$STOWPACK_HOME/$basename"
+      echo "Force-installed: $i\t>\t$stowpack_home/$basename"
     fi
   done
 }
 
 function stowpack-home {
-  cd $STOWPACK_HOME
+  cd $stowpack_home
 }
 
 function stowpack-log {
-  echo "[$(date +'%H:%M %d/%m/%g')] $@" >> $STOWPACK_HOME/log/recipe.log
+  echo "[$(date +'%H:%M %d/%m/%g')] $@" >> $stowpack_home/log/recipe.log
   echo "$@"
 }
