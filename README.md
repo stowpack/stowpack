@@ -7,7 +7,7 @@ A versatile package manager for Linux. Compatible with many distros.
 There is no way to install Stowpack that is easier than running this command:
 
 ```
-wget -qO- https://tinyurl.com/stowpackinst | bash
+bash -c "$(wget -qO- https://tinyurl.com/stowpackinst)"
 ```
 
 ## Usage
