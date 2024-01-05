@@ -1,4 +1,3 @@
-#!/bin/bash
 clear
 function stowpack_config {
   echo "# Configuration for stowpack. Read https://tylerms887.github.io/stowpack/config"
