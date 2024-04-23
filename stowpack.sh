@@ -193,7 +193,7 @@ case $command in
     install)
         shift
         if [ $# -eq 1 ]; then
-           echo "🠟 1 target to install."
+           echo "🠟 A single target to install."
         else
            echo "🠟 $# targets to install."
         fi
@@ -208,7 +208,7 @@ case $command in
     cook)
         shift
         if [ $# -eq 1 ]; then
-           echo "🍜 1 bowl to cook."
+           echo "🍜 A single bowl to cook."
         else
            echo "🍜 $# bowls to cook."
         fi
