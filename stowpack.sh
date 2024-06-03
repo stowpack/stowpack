@@ -47,10 +47,10 @@ typewriter_effect() {
 }
 
 mkdir -p $stowpack_home/bowls
+
+# Cook the main bowl, because who doesn't need it?
 if [ ! -d "$stowpack_home/bowls/main" ]; then
-  echo "Cooking main bowl."
   if git clone https://github.com/stowpack/main $stowpack_home/bowls/main; then
-  echo "Cooked!"
   else
   echo "Error. Continuing without a main bowl."
   fi
@@ -81,6 +81,36 @@ function parse_tap_url {
     url="https://github.com/$user/bowl-$name.git"
     # Print the url
     echo $url
+  fi
+}
+
+# Check if a bowl is from the official Stowpack repository
+function official_bowl {
+  # Assume the repo name or the full URL is passed as the first argument
+  input=$1
+  # Check if the input starts with http or https
+  if [[ $input =~ ^https?:// ]]; then
+    # Return the input as it is
+    echo $input
+  else
+    # Parse the input as a repo name
+    # Check if the input contains a slash
+    if [[ $input == *"/"* ]]; then
+      # Extract the user name and the repo name without the .git extension
+      user=$(echo $input | cut -d '/' -f 1)
+      name=$(echo $input | cut -d '/' -f 2 | cut -d '.' -f 1)
+    else
+      # Use "stowpack" as the default user name
+      user="stowpack"
+      # Extract the repo name without the .git extension
+      name=$(echo $input | cut -d '.' -f 1)
+    fi
+    # Come to conclusion, official or not?
+    if [[ "$user" == "stowpack" ]]; then
+      stowpack_official=yes
+    else
+      stowpack_official=no
+    fi
   fi
 }
 
@@ -236,8 +266,13 @@ case $command in
            echo "🍜 $# bowls to cook."
         fi
         for bowl in $@; do
-           echo "🍳 Cooking $bowl"
-           echo " $(parse_tap_url $bowl)"
+           echo "🍳  $bowl $DIM$(parse_tap_url $bowl)$RESET"
+           if [ $stowpack_requireofficial = "true" ]; then
+             official_bowl
+             if [[ "$bowl_official" = "false" ]]; then
+               echo "Can't cook unofficial bowl due to config rules."
+               exit 1
+             fi
            git clone "$(parse_tap_url $bowl)" "$stowpack_home/bowls/$(basename $bowl)" -q
         done
         echo "$# bowls cooked."
@@ -251,18 +286,29 @@ case $command in
         stcli_help
         ;;
     path)
-        echo "export PATH=\"\$PATH:$stowpack_home/bin:$stowpack_home/sbin\""
-        echo "export MANPATH=\"\$MANPATH/$stowpack_home/man\""
+        if [[ -d "~/.omb" ]]; then
+          echo "You are already using Bash Attack,"
+          echo "you can enable the stowpack plugin instead."
+          exit 1
+        fi
+        echo "export PATH=\"\$PATH:$stowpack_home/bin:$stowpack_home/sbin\"" >> ~/.bashrc
+        echo "export MANPATH=\"\$MANPATH/$stowpack_home/man\"" >> ~/.bashrc
+        echo "Injected into Bashrc."
         ;;
     woofwoof)
+        typewriter_effect "PRINTING DOG PICTURE..." 0.06
+        typewriter_effect "This uses Typewriter effect which" 0.02
+        typewriter_effect "prints characters with a delay" 0.02
+        typewriter_effect "between each other." 0.02
         typewriter_effect "     |\\_/|                  
      | o o
      |   <>              _  
      |  _/\\------____ ((| |))
      |               \`--' |   
  ____|_       ___|   |___.' 
-/_/_____/____/_______|" 0.02
+/_/_____/____/_______|" 0.1
         ;;
+        echo "This will relive the best of memories."
     *)
         echo "$1: Invalid command, see \`stowpack help\`."
         exit 1
