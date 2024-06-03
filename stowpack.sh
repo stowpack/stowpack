@@ -34,6 +34,18 @@ function parse_yaml {
 # Get the variables
 eval $(parse_yaml ~/.stowpack/config)
 
+# Function to emulate typewriting effect
+typewriter_effect() {
+    local text="$1"
+    local delay="$2"
+
+    for ((i = 0; i < ${#text}; i++)); do
+        echo -n "${text:$i:1}"
+        sleep "$delay"
+    done
+    echo  # Print a newline after the effect completes
+}
+
 mkdir -p $stowpack_home/bowls
 if [ ! -d "$stowpack_home/bowls/main" ]; then
   echo "Cooking main bowl."
@@ -169,7 +181,7 @@ function stcli_help {
     echo -e "${BOLD}Commands:${RESET}"
     echo -e "install\t\tinstall one or more packages."
     echo -e "uninstall\tuninstall one or more packages."
-    echo -e "update\t\tupdate the repositories."
+    echo -e "upgrade\t\tupgrade one or more packages."
     echo -e "cook\t\tcook a bowl, from GitHub or other git repo."
     echo -e "update\t\tupdate taps to the latest version."
     echo -e "help\t\tprint this message."
@@ -200,10 +212,21 @@ case $command in
         for pkg in $@; do
            stcli_install $pkg
         done
+        echo "All targets installed."
         exit $?
         ;;
     uninstall)
-        stcli_uninstall $2
+        shift
+        if [ $# -eq 1 ]; then
+           echo "🠟 A single target to uninstall."
+        else
+           echo "🠟 $# targets to uninstall."
+        fi
+        for pkg in $@; do
+           stcli_uninstall $pkg
+        done
+        echo "All targets uninstalled, RIP. :("
+        exit $?
         ;;
     cook)
         shift
@@ -213,9 +236,12 @@ case $command in
            echo "🍜 $# bowls to cook."
         fi
         for bowl in $@; do
-           echo "⊕ Cooking $bowl ($(parse_tap_url $bowl))"
-           git clone "$(parse_tap_url $bowl)" "$stowpack_home/bowls/$(basename $bowl)"
+           echo "🍳 Cooking $bowl"
+           echo " $(parse_tap_url $bowl)"
+           git clone "$(parse_tap_url $bowl)" "$stowpack_home/bowls/$(basename $bowl)" -q
         done
+        echo "$# bowls cooked."
+        echo "$newpackages packages added by new bowls."
         exit $?
         ;;
     update)
@@ -229,13 +255,13 @@ case $command in
         echo "export MANPATH=\"\$MANPATH/$stowpack_home/man\""
         ;;
     woofwoof)
-        echo "     |\\_/|                  
-     | o o   They jumped over me, a lazy dog. 
+        typewriter_effect "     |\\_/|                  
+     | o o
      |   <>              _  
      |  _/\\------____ ((| |))
      |               \`--' |   
  ____|_       ___|   |___.' 
-/_/_____/____/_______|"
+/_/_____/____/_______|" 0.02
         ;;
     *)
         echo "$1: Invalid command, see \`stowpack help\`."
