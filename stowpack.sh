@@ -51,6 +51,7 @@ mkdir -p $stowpack_home/bowls
 # Cook the main bowl, because who doesn't need it?
 if [ ! -d "$stowpack_home/bowls/main" ]; then
   if git clone https://github.com/stowpack/main $stowpack_home/bowls/main; then
+  echo "Cooked main bowl"
   else
   echo "Error. Continuing without a main bowl."
   fi
