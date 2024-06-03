@@ -274,6 +274,7 @@ case $command in
                echo "Can't cook unofficial bowl due to config rules."
                exit 1
              fi
+           fi
            git clone "$(parse_tap_url $bowl)" "$stowpack_home/bowls/$(basename $bowl)" -q
         done
         echo "$# bowls cooked."
