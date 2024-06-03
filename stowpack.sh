@@ -309,8 +309,8 @@ case $command in
      |               \`--' |   
  ____|_       ___|   |___.' 
 /_/_____/____/_______|" 0.1
-        ;;
         echo "This will relive the best of memories."
+        ;;
     *)
         echo "$1: Invalid command, see \`stowpack help\`."
         exit 1
