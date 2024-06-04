@@ -197,15 +197,7 @@ function stcli_install {
 }
 
 function stcli_help {
-   echo "                                         
-  -_-/    ,                                ,,   
- (_ /    ||        ;              _        ||   
-(_ --_  =||=  /'\\\\ \\\\/\\/\\ -_-_   < \\,  _-_ ||/\\ 
-  --_ )  ||  || || || | | || \\\\  /-|| ||   ||_< 
- _/  ))  ||  || || || | | || || (( || ||   || | 
-(_-_-    \\\\, \\\\,/  \\\\/\\\\/ ||-'   \\/\\\\ \\\\,/ \\\\,\\ 
-                          |/                    
-                          '                     "
+    cat logo.txt
     echo
     echo -e "${BOLD}Usage:${RESET} $0 command ${DIM}[--options ..] [arguments]${RESET}"
     echo
