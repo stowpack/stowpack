@@ -197,8 +197,6 @@ function stcli_install {
 }
 
 function stcli_help {
-    cat logo.txt
-    echo
     echo -e "${BOLD}Usage:${RESET} $0 command ${DIM}[--options ..] [arguments]${RESET}"
     echo
     echo -e "${BOLD}Commands:${RESET}"
@@ -212,6 +210,8 @@ function stcli_help {
 
 # Check the number of arguments
 if [ $# -eq 0 ]; then
+    tail -n +4 filename.txt
+    echo
     if [ $stowpack_require_command = "true" ]; then
       echo "Please provide a command, or run \`stowpack help\` for help."
       exit 1
